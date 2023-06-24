@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Counter App</title>
+</head>
+<body>
+  <h1>Counter</h1>
+  <p>Count: <span id="count">0</span></p>
+  <button id="incrementBtn">Increment</button>
+
+  <script>
+    const countElement = document.getElementById('count');
+    const incrementBtn = document.getElementById('incrementBtn');
+
+    incrementBtn.addEventListener('click', () => {
+      let count = parseInt(countElement.textContent);
+      count++;
+      countElement.textContent = count;
+    });
+  </script>
+</body>
+</html>
