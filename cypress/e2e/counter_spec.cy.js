@@ -1,6 +1,6 @@
 describe('Counter App', () => {
   it('increments the counter', () => {
-    cy.visit('./app/index.html');
+    cy.visit('evals/eval-001/app/index.html');
 
     cy.get('#count').should('contain', '0');
 
