@@ -28,6 +28,7 @@ async function runEval(evalId) {
   const promptFilePath = "./evals/eval-001/prompt.md";
   const sourceDir = "./evals/eval-001/app";
   const targetDir = "./output/eval-001/app/" + (evalId || "0");
+  let results = {};
 
   try {
     await fs.ensureDir(targetDir);
@@ -37,11 +38,28 @@ async function runEval(evalId) {
     await runAgent(targetDir, fs.readFileSync(promptFilePath, "utf-8"));
 
     const results = await runCypressTests(evalId);
-    console.log("Passed:", `${results.totalPassed}/${results.totalTests}`);
-    console.log("Duration:", results.totalDuration);
+    console.log(
+      `[001-${evalId}] Passed: ${results.totalPassed}/${results.totalTests}`
+    );
+    console.log(`[001-${evalId}] Duration: ${results.totalDuration}`);
+    return { [evalId]: results.totalPassed === results.totalTests };
   } catch (error) {
     console.error("Error:", error);
   }
+}
+
+function generateBoxes(inputObj) {
+  let html = "";
+
+  for (let key in inputObj) {
+    if (inputObj.hasOwnProperty(key)) {
+      const value = inputObj[key];
+      const boxColor = value ? "green" : "red";
+      html += `<div style="background-color: ${boxColor}; width: 50px; height: 50px; display: inline-block; margin: 5px; border: 2px solid #333;"></div>`;
+    }
+  }
+
+  return html;
 }
 
 async function runEvals(batchSize) {
@@ -58,7 +76,18 @@ async function runEvals(batchSize) {
     evalPromises.push(runEval(i));
   }
 
-  await Promise.all(evalPromises);
+  const results = await Promise.all(evalPromises);
+
+  const mergedResults = results.reduce((result, currentObject) => {
+    for (let key in currentObject) {
+      if (currentObject.hasOwnProperty(key)) {
+        result[key] = currentObject[key];
+      }
+    }
+    return result;
+  }, {});
+
+  fs.writeFileSync(outputDir + "/results.html", generateBoxes(mergedResults));
 }
 
 runEvals(10);
