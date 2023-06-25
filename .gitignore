@@ -2,3 +2,4 @@ node_modules
 output
 /cypress/screenshots/
 /test-results.xml
+.env
