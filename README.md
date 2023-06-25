@@ -2,9 +2,13 @@
 
 To get started:
 
+create .env with OPENAI_API_KEY
+
 `yarn install`
 
 `node evals.js`
+
+The eval in eals/eval-001 will be run ten times. The results will be saved to ./output.
 
 # Eval structure
 
