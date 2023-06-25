@@ -1,4 +1,5 @@
 const cypress = require("cypress");
+const fs = require("fs-extra");
 
 async function runCypressTests() {
   try {
@@ -18,6 +19,27 @@ async function runCypressTests() {
     throw error;
   }
 }
+
+const sourceDir = "./evals/eval-001/app";
+const targetDir = "./output/eval-001/app";
+
+fs.remove(targetDir)
+  .then(() => {
+    console.log("Directory removed successfully!");
+    fs.ensureDir(targetDir)
+      .then(() => {
+        return fs.copy(sourceDir, targetDir);
+      })
+      .then(() => {
+        console.log("Directory copied successfully!");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 runCypressTests()
   .then((results) => {
