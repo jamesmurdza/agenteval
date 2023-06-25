@@ -15,11 +15,11 @@ async function modifyCode(sourceCode, prompt) {
         {
           role: "user",
           content:
-            "```\n" +
+            "*index.html*```\n" +
             sourceCode +
             "\n```\n\n" +
             prompt +
-            "\n\nReturn the entire contents of the new file. Do not use fences.",
+            "\n\nReturn the entire contents of the new index.html.",
         },
       ],
       temperature: 0.2, // Adjust as per your preference
@@ -27,7 +27,7 @@ async function modifyCode(sourceCode, prompt) {
     });
 
     const modifiedCode = gptResponse.data.choices[0].message.content.trim();
-    const cleanedCode = modifiedCode.replace(/^`{3}\n|\n`{3}$/g, "");
+    const cleanedCode = modifiedCode.replace(/^`{3}(\n)?|(\n)?`{3}$/g, "");
     return cleanedCode;
   } catch (error) {
     console.error("Error:", error);
@@ -35,14 +35,11 @@ async function modifyCode(sourceCode, prompt) {
   }
 }
 
-async function run(targetDir) {
+async function run(targetDir, prompt) {
   try {
     const filePath = `${targetDir}/index.html`;
     const fileContent = await fs.promises.readFile(filePath, "utf-8");
-    const modifiedContent = await modifyCode(
-      fileContent,
-      "function increment()"
-    );
+    const modifiedContent = await modifyCode(fileContent, prompt);
     await fs.promises.writeFile(filePath, modifiedContent, "utf-8");
 
     console.log("File modified successfully.");
