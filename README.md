@@ -22,7 +22,7 @@ Each eval contains:
 
 Using integration tests, you can automate the testing of your agent or run Monte Carlo simulations.
 
-<img width="1041" alt="Screenshot 2023-06-26 at 2 48 17 PM" src="https://github.com/jamesmurdza/agenteval/assets/33395784/26f416f8-b803-402c-8abe-6b5bca9bc253">
+<img width="1066" alt="AgentEval" src="https://github.com/jamesmurdza/agenteval/assets/33395784/5fdf3db0-47fe-4b1b-9f2c-954c8d9996e6">
 
 # Demo
 
